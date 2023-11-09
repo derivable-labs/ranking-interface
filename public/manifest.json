@@ -1,0 +1,23 @@
+{
+  "short_name": "Derivable",
+  "name": "Derivable - Open Perpetual AMM Protocol",
+  "description": "Open Perpetual AMM Protocol with infinite liquidity and no liquidation.",
+  "homepage_url": "https://derivable.finance",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#121212",
+  "background_color": "#02060B",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "type": "image/x-icon",
+      "sizes": "48x48"
+    },
+    {
+      "src": "logo.png",
+      "type": "image/png",
+      "sizes": "177x33"
+    }
+  ]
+}
