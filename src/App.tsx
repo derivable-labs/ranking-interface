@@ -48,7 +48,7 @@ function App() {
             return (
               <div>
                 <p style={{ color: _ >= 15 ? "gray" : "black" }}>
-                  {_ + 1}. {r.address}: {r.balance} PLD
+                  <code>{_ + 1}. {r.address.substring(0,10)}..{r.address.substring(34)} = $ {Number(r.balance).toFixed(0)}</code>
                 </p>
               </div>
             );
