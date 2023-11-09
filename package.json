@@ -2,6 +2,7 @@
   "name": "derivable-interface",
   "version": "0.1.0",
   "private": true,
+  "homepage": "rank",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -36,6 +37,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "deploy": "cp -r build/* ../../derivableio/derivableio.github.io/rank/",
     "start": "react-app-rewired start",
     "build": "react-app-rewired build"
   },
