@@ -23,6 +23,20 @@ function App() {
         console.log(numLogs);
         setStatus([...status, `Received ${numLogs} logs`]);
       },
+      // Price Inprogress
+      (pools) => {
+        console.log("123");
+        setStatus([
+          ...status,
+          `Processing price in-progress with ${pools.length} pools...`,
+        ]);
+      },
+      (poolsSpot) => {
+        setStatus([
+          ...status,
+          "Price in-progress processing is successfully done.",
+        ]);
+      },
       (participatingWallets, illegalWallets) => {
         console.log(participatingWallets, illegalWallets);
         setStatus([
@@ -31,6 +45,18 @@ function App() {
           `Detected ${illegalWallets.length} illegal wallets`,
         ]);
         setIllegalWallets(illegalWallets);
+      },
+      (computes) => {
+        setStatus([
+          ...status,
+          `Processing compute in-progress with ${computes.length} computes...`,
+        ]);
+      },
+      (computesValue) => {
+        setStatus([
+          ...status,
+          "Compute in-progress processing is successfully done.",
+        ]);
       }
     )
       .then((res) => {
@@ -42,7 +68,7 @@ function App() {
   }, [setRanking, setIllegalWallets, setStatus]);
   return (
     <div style={{ background: "" }}>
-      {rank.length !== 0 ? <p>------- Participate Wallets -------</p> : ''}
+      {rank.length !== 0 ? <p>------- Participate Wallets -------</p> : ""}
       {rank.length !== 0
         ? rank.map((r, _) => {
             return (
@@ -54,21 +80,27 @@ function App() {
             );
           })
         : ""}
-      {illegalWallets.length !== 0 ? <p>------- Illegal Wallets -------</p> : ''}
+      {illegalWallets.length !== 0 ? (
+        <p>------- Illegal Wallets -------</p>
+      ) : (
+        ""
+      )}
       {illegalWallets.length !== 0
         ? illegalWallets.map((r, _) => {
             return (
               <div>
                 <p style={{ color: _ >= 15 ? "gray" : "black" }}>
-                  Tx: <a href={`https://bscscan.com/tx/${r.txHash}`}>
+                  Tx:{" "}
+                  <a href={`https://bscscan.com/tx/${r.txHash}`}>
                     {cutAddress(r.txHash)}
-                  </a> | {r.address} | {r.reason}
+                  </a>{" "}
+                  | {r.address} | {r.reason}
                 </p>
               </div>
             );
           })
         : ""}
-      {status.length !== 0 ? <p>------- Loading Status -------</p> : ''}
+      {status.length !== 0 ? <p>------- Loading Status -------</p> : ""}
       {status.map((s, _) => {
         return (
           <p>

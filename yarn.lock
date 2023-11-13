@@ -10388,7 +10388,7 @@ range-parser@^1.2.1, range-parser@~1.2.1:
 
 "ranking-tools@https://github.com/derivable-labs/ranking-tool.git#main":
   version "1.0.0"
-  resolved "https://github.com/derivable-labs/ranking-tool.git#e3c656c019c82081bf3c7149ab275fbd3d8e66dd"
+  resolved "https://github.com/derivable-labs/ranking-tool.git#a8aa93edfac1888ca12df40ee86c7a24df565239"
   dependencies:
     "@ethersproject/providers" "https://gitpkg.now.sh/derivable-labs/ethers.js/packages/providers?master"
     assisted-json-rpc-provider "git+ssh://git@github.com:derivable-labs/AssistedJsonRpcProvider.git#dev"
