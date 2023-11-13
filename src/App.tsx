@@ -1,5 +1,5 @@
 import { getRank } from "ranking-tools";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { cutAddress } from "./utils";
 function App() {
   const [rank, setRanking] = useState<{ address: string; balance: string }[]>(
@@ -8,55 +8,47 @@ function App() {
   const [illegalWallets, setIllegalWallets] = useState<
     { address: String; reason: String; txHash: String }[]
   >([]);
-  const [status, setStatus] = useState<string[]>([]);
-  useEffect(() => {
+  const [logsStatus, setLogsStatus] = useState<string>("");
+  const [priceStatus, setPriceStatus] = useState<string>("");
+  const [participationStatus, setParticipationStatus] = useState<string>("");
+  const [computeStatus, setComputeStatus] = useState<string>("");
+  useMemo(() => {
     console.log("request");
     getRank(
       (fromBlock, toBlock) => {
-        console.log(fromBlock, toBlock);
-        setStatus([
-          ...status,
-          `Retrieving in-progress logs from block ${fromBlock} to block ${toBlock}...`,
-        ]);
+        setLogsStatus(
+          `Retrieving in-progress logs from block ${fromBlock} to block ${toBlock}...`
+        );
       },
       (numLogs) => {
-        console.log(numLogs);
-        setStatus([...status, `Received ${numLogs} logs`]);
+        setLogsStatus(`Received ${numLogs} logs`);
       },
       // Price Inprogress
       (pools) => {
-        console.log("123");
-        setStatus([
-          ...status,
-          `Processing price in-progress with ${pools.length} pools...`,
-        ]);
+        setPriceStatus(
+          `Processing price in-progress with ${pools.length} pools...`
+        );
       },
       (poolsSpot) => {
-        setStatus([
-          ...status,
-          "Price in-progress processing is successfully done.",
-        ]);
+        setPriceStatus("Price in-progress processing is successfully done.");
       },
       (participatingWallets, illegalWallets) => {
         console.log(participatingWallets, illegalWallets);
-        setStatus([
-          ...status,
-          `Identified ${participatingWallets.length} participating wallets`,
-          `Detected ${illegalWallets.length} illegal wallets`,
-        ]);
+        setParticipationStatus(
+          `Identified ${participatingWallets.length} participating wallets` +
+            `\n Detected ${illegalWallets.length} illegal wallets`
+        );
         setIllegalWallets(illegalWallets);
       },
       (computes) => {
-        setStatus([
-          ...status,
-          `Processing compute in-progress with ${computes.length} computes...`,
-        ]);
+        setComputeStatus(
+          `Processing compute in-progress with ${computes.length} computes...`
+        );
       },
       (computesValue) => {
-        setStatus([
-          ...status,
-          "Compute in-progress processing is successfully done.",
-        ]);
+        setComputeStatus(
+          "Compute in-progress processing is successfully done."
+        );
       }
     )
       .then((res) => {
@@ -65,16 +57,37 @@ function App() {
       .catch((e) => {
         console.log(e);
       });
-  }, [setRanking, setIllegalWallets, setStatus]);
+  }, [
+    setRanking,
+    setIllegalWallets,
+    setComputeStatus,
+    setLogsStatus,
+    setParticipationStatus,
+    setPriceStatus,
+  ]);
   return (
     <div style={{ background: "" }}>
+      {rank.length === 0 ? (
+        <div>
+          <p>------- Loading Status -------</p>
+          <p> {logsStatus} </p>
+          <p> {participationStatus} </p>
+          <p> {priceStatus} </p>
+          <p> {computeStatus} </p>
+        </div>
+      ) : (
+        ""
+      )}
       {rank.length !== 0 ? <p>------- Participate Wallets -------</p> : ""}
       {rank.length !== 0
         ? rank.map((r, _) => {
             return (
               <div>
                 <p style={{ color: _ >= 15 ? "gray" : "black" }}>
-                  <code>{_ + 1}. {r.address.substring(0,10)}..{r.address.substring(34)} = $ {Number(r.balance).toFixed(0)}</code>
+                  <code>
+                    {_ + 1}. {r.address.substring(0, 10)}..
+                    {r.address.substring(34)} = $ {Number(r.balance).toFixed(0)}
+                  </code>
                 </p>
               </div>
             );
@@ -100,14 +113,6 @@ function App() {
             );
           })
         : ""}
-      {status.length !== 0 ? <p>------- Loading Status -------</p> : ""}
-      {status.map((s, _) => {
-        return (
-          <p>
-            {_ + 1}. {s}
-          </p>
-        );
-      })}
     </div>
   );
 }
